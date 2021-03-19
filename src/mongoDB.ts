@@ -1,4 +1,6 @@
 import {MongoClient} from 'mongodb'
+import env from 'dotenv'
+env.config()
 
 // const findDocuments = function(db, callback) {
 //     // Get the documents collection
@@ -37,7 +39,9 @@ async function main(){
      * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
      * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
      */
-     const uri = "mongodb+srv://loggi30:4pons3iq@cluster0.37ogv.mongodb.net/sample_airbnb?retryWrites=true&w=majority"
+    //  const uri = "mongodb+srv://loggi30:4pons3iq@cluster0.37ogv.mongodb.net/sample_airbnb?retryWrites=true&w=majority"
+     const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.37ogv.mongodb.net/sample_airbnb?retryWrites=true&w=majority`
+     console.log('uri: ', uri);
  
 
     const client = new MongoClient(uri);
