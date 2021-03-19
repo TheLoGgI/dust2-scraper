@@ -1,5 +1,6 @@
 node_modules
 dist
 artical.json
+data.json
 package-lock.json
-tsconfig.json
+.gitignore

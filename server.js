@@ -176,7 +176,7 @@ app.get("/", (req, res) => {
   console.log('isScraping: ', isScraping);
   if (fileJson.length > 0 && !isScraping) {
     res.send(
-      `<pre> ${JSON.stringify(fileJson, null, "\t")} <pre/>`
+      fileJson
     )
 
   }
