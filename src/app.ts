@@ -16,22 +16,6 @@ app.use(writeDatabase)
 const _fileName = `artical.json`
 const _scrapeWebsiteLink = 'https://www.dust2.dk' 
 
-
-
-// client.connect((err: any) => {
-//   const db = client.db("sample_analytics");
-//   const collection = db.collection("customers");
-//   collection.find({}).toArray(function (err: any, docs: any) {
-//     //   assert.equal(err, null);
-//     console.log("Found the following records");
-//     console.log(docs);
-//     //   callback(docs);
-//   });
-
-//   // findDocuments(db)
-//   client.close();
-// });
-
 let isScraping = true;
 
 async function scrape(url: string) {
@@ -49,26 +33,6 @@ async function scrape(url: string) {
 
 
 }
-
-// async function articalLinks(url: string): Promise<string[] | undefined> {
-//   const doc: DocType = await scrape(url)
-//   if (doc.status === 200) {
-//       const $ = cheerio.load(await doc.data as any)
-//       const hrefs = $(".mediumNewsCon a").map((index, element: cheerio.TagElement | any ): string | undefined => {
-//         if (element.name === "a" && element.attribs) {
-//           return url + element.attribs.href;
-//         }
-//       })
-      
-//       return hrefs.toArray() as unknown as string[]
-//   }
-
-// }
-
-// function getArticalId(url: string): string {
-//     // @ts-ignore
-//     return url.match(/\/(\w+)-/)[1]
-// }
 
 async function articalLinks(url: string): Promise<string[]> {
   const doc = await scrape(url)
@@ -136,7 +100,6 @@ function writeJSON(fileName = "data.json", data: ArticalType) {
     const fileJson: ArticalType[] = JSON.parse(rawFileData.toString())
     console.log('fileJson isArray: ', Array.isArray(fileJson));
     const hasArticalData = fileJson.some((fileJson) => fileJson.id === data.id )
-    // console.log('hasArticalData: ', hasArticalData);
       
     if (!hasArticalData) {
       console.log('Next artical', data.id)
