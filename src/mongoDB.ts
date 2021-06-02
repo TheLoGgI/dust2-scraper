@@ -1,7 +1,14 @@
-import {MongoClient} from 'mongodb'
+import {Collection, MongoClient} from 'mongodb'
 import env from 'dotenv'
+import { ArticalType } from './types';
 env.config()
 
+
+const dbConfig = {
+    databaseName: 'DUST2',
+    collectionName: 'artical'
+  }
+  
 // const findDocuments = function(db, callback) {
 //     // Get the documents collection
 //     const collection = db.collection("customers");
@@ -14,57 +21,72 @@ env.config()
 //     });
 //   }
 
+// Create a collection in the Mongo Database
+// MongoClient.connect(uri, function(err, db) {
+//     if (err) throw err;
+//     var dbo = db.db("mydb");
+//     dbo.createCollection("customers", function(err, res) {
+//       if (err) throw err;
+//       console.log("Collection created!");
+//       db.close();
+//     });
+//   });
+
 // -------- MONGODB -------
 async function listDatabases(client: MongoClient) {
-    // const databasesList = await client.db().admin().listDatabases();
-    // console.log('databasesList: ', databasesList);
-    const data = await client.db('sample_airbnb').collection('listingsAndReviews').find().toArray((err, docs) => {
-        console.log('docs: ', docs);
-        return docs
-    })
-    console.log('data: ', data);
-
-    
-    // console.log("Databases:");
-    // databasesList.databases.forEach((db: any) => console.log(` - ${db.name}`));
+    return await client.db().admin().listDatabases();
 }
 
-// const uri = "mongodb+srv://loggi30:4pons3iq@cluster0.37ogv.mongodb.net/sample_airbnb?retryWrites=true&w=majority"
-// const client = new MongoClient(uri);
+async function getCollectionData(client: MongoClient, config: {databaseName: string, collectionName: string}) {
+    // Check for config for real names or collection object
+    
+    return await client.db(dbConfig.databaseName).collection(dbConfig.collectionName).find().toArray()
+}
 
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+async function insertDocument(collection : Collection, document: ArticalType) {
+    
+    return await collection.insertOne(document).catch(error => {
+        console.log('insert error on document', error);
+        throw error
+    })
+
+}
+
+async function getCollectionConnection(client: MongoClient) {
+    return await client.db(dbConfig.databaseName).collection(dbConfig.collectionName)
+}
 
 async function main(){
     /**
      * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
      * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
      */
-    //  const uri = "mongodb+srv://loggi30:4pons3iq@cluster0.37ogv.mongodb.net/sample_airbnb?retryWrites=true&w=majority"
-     const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.37ogv.mongodb.net/sample_airbnb?retryWrites=true&w=majority`
-     console.log('uri: ', uri);
- 
+     const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.37ogv.mongodb.net`
+     
+    const client = new MongoClient(uri, { useUnifiedTopology: true } );
 
-    const client = new MongoClient(uri);
- 
+
     try {
         // Connect to the MongoDB cluster
         await client.connect();
  
-        // Make the appropriate DB calls
-        await  listDatabases(client);
- 
     } catch (e) {
         console.error(e);
     } finally {
-        await client.close();
+        return client
+        // await client.close();
     }
+
 }
 
-main().catch(console.error);
+// main().catch(console.error);
 
 
 export {
-    main
+    main, 
+    insertDocument,
+    listDatabases,
+    getCollectionData,
+    getCollectionConnection,
+    dbConfig
 }
-
-// module.exports = {client, findDocuments}

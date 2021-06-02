@@ -9,9 +9,13 @@ export type DocType = {
 
 export type ArticalType = {
     id: string
+    _id?: string
+    url: string
     heading: string
     subTitle: string
     author: string
     date: string
+    images: string[]
     body: string[]
 }
+
