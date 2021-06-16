@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+    meta(charset="utf-8")
+    meta(name="author", content="Lasse Aakjær")
+    meta(name="viewport" content="initial-scale=1.0, width=device-width")
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css", integrity="undefined", crossorigin="anonymous")
+
+  style 
+  body
+    div.container
+      h1.my-5 Dust2 Artikler
+      div.row.row-cols-auto
+        each artical in collectionData
+          div(style="width:18rem").card.col.m-2
+              img(src=artical.images[0], class="card-img-top", alt=artical.heading)
+              div.card-body
+                  p.fs-6.text-muted.mb-0= artical.date
+                  h5.card-title= artical.heading
+                  p.card-text= artical.subTitle
+                  a(href=artical.url target="_blank").btn.btn-primary Dust2 artiklen

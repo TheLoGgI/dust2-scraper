@@ -3,8 +3,8 @@ import { scrape,
     articalLinks,
     getArticalId,
     scrapeArtical
-} from "./app";
-import { ArticalType} from "./types";
+} from ".";
+import { ArticalType} from "../types";
 import express, { Application, Request, Response, NextFunction } from "express";
 
 const app = express();

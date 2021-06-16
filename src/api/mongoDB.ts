@@ -1,6 +1,6 @@
 import {Collection, MongoClient} from 'mongodb'
 import env from 'dotenv'
-import { ArticalType } from './types';
+import { ArticalType } from '../types';
 env.config()
 
 
@@ -46,8 +46,9 @@ async function getCollectionData(client: MongoClient, config: {databaseName: str
 async function insertDocument(collection : Collection, document: ArticalType) {
     
     return await collection.insertOne(document).catch(error => {
-        console.log('insert error on document', error);
-        throw error
+        if (error.code === 11000) console.log(`Document with duplicate key { _id: ${error.keyValue._id} }`)
+        else console.log(error.code, error.reason, error.status)
+        
     })
 
 }
@@ -69,7 +70,7 @@ async function main(){
     try {
         // Connect to the MongoDB cluster
         await client.connect();
- 
+
     } catch (e) {
         console.error(e);
     } finally {

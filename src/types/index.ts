@@ -8,8 +8,7 @@ export type DocType = {
 
 
 export type ArticalType = {
-    id: string
-    _id?: string
+    _id: string
     url: string
     heading: string
     subTitle: string

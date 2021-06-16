@@ -1,16 +1,24 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import fetch from "node-fetch";
+import cors from 'cors'
 import cheerio from "cheerio";
+// import jade from 'jade' 
 
 
-
-import {DocType, ArticalType} from "./types";
+import {DocType, ArticalType} from "../types";
 
 import { main, getCollectionData,getCollectionConnection, insertDocument, dbConfig} from "./mongoDB";
 import { MongoClient } from "mongodb";
+import path from "path";
 
 const app = express();
 const port = 3000;
+
+app.use(cors());
+// app.set('view', path.join(__dirname, '../public/views'))
+app.set('view engine', 'jade')
+app.use('/static', express.static(path.join(__dirname, '../public')))
+// app.use(updateDatabase)
 
 
 const _scrapeWebsiteLink = 'https://www.dust2.dk' 
@@ -78,7 +86,6 @@ async function scrapeArtical(url: string): Promise<ArticalType | null> {
 
   return {
     _id: articalId,
-    id: articalId,
     url,
     heading,
     subTitle,
@@ -92,11 +99,8 @@ async function scrapeArtical(url: string): Promise<ArticalType | null> {
 
 
 async function writeDatabase(client: MongoClient) {
-  console.log('client: ', client);
-  // const database: ArticalType[]  = [];
   const dbPromises = [];
   const links = await articalLinks(_scrapeWebsiteLink)
-  // const failedLinks: string[] = []
   if (links.length > 0) {
 
     for (const link of links) {
@@ -131,11 +135,22 @@ async function updateDatabase() {
 setInterval(updateDatabase, 43_200_000)
 
 
-app.get("/", async (req, res, next) => {
+app.get('/', async function(req, res) {
+
+  const client = await main()
+  const collectionData = await getCollectionData( client, dbConfig)
+  
+  res.type('text/html')
+  res.set('Content-Type', 'text/html')
+  res.render(path.join(__dirname, '../public/views/index'), { title: 'Jade is awesome', collectionData })
+  await client.close();
+});
+
+app.get("/api/articals", async (req, res, next) => {
   const client = await main()
   
     const collectionData = await getCollectionData( client, dbConfig)
-
+    
     res.type('application/json')
     await client.close();
     res.status(200).send(collectionData)
