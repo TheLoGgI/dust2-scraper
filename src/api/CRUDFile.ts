@@ -18,7 +18,7 @@ function writeJSON(fileName = "data.json", data: ArticalType) {
   return new Promise((resolve, reject) => {
     // CREATE: new JSON file object
     if (rawFileData.length < 2) {
-      console.log('First artical', data.id)
+      console.log('First artical', data._id)
       const json = JSON.stringify([data])
       console.log('json: ', json);
       fs.writeFile(fileName, json, 'utf8', (err) => {
@@ -31,10 +31,10 @@ function writeJSON(fileName = "data.json", data: ArticalType) {
     // Else check data don't exist in file
     const fileJson: ArticalType[] = JSON.parse(rawFileData.toString())
     console.log('fileJson isArray: ', Array.isArray(fileJson));
-    const hasArticalData = fileJson.some((fileJson) => fileJson.id === data.id )
+    const hasArticalData = fileJson.some((fileJson) => fileJson._id === data._id )
       
     if (!hasArticalData) {
-      console.log('Next artical', data.id)
+      console.log('Next artical', data._id)
         fileJson.push(data)
         const json = JSON.stringify(fileJson)
         fs.writeFile(fileName, json, 'utf8', function(err){
@@ -43,8 +43,8 @@ function writeJSON(fileName = "data.json", data: ArticalType) {
         reject(err)
       })
     }  else {
-          console.log('Data already exists in file', data.id)
-          reject(`id: ${data.id} already exists in file`)
+          console.log('Data already exists in file', data._id)
+          reject(`id: ${data._id} already exists in file`)
       }
       
       resolve("Success!")

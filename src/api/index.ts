@@ -101,6 +101,7 @@ async function scrapeArtical(url: string): Promise<ArticalType | null> {
 async function writeDatabase(client: MongoClient) {
   const dbPromises = [];
   const links = await articalLinks(_scrapeWebsiteLink)
+  console.log('links: ', links);
   if (links.length > 0) {
 
     for (const link of links) {
@@ -131,6 +132,8 @@ async function updateDatabase() {
   await writeDatabase(client)
 }
 
+// Fetch articals on first start
+updateDatabase()
 // 12 hours update time - 43_200_000
 setInterval(updateDatabase, 43_200_000)
 
