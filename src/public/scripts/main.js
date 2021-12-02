@@ -21,4 +21,3 @@ fetch('http://localhost:3000/api/articals')
 })
 
 // const template = jade.compile()
-console.log('Hallo World');

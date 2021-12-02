@@ -1,0 +1,29 @@
+{
+  "extends": ["@parcel/config-default"],
+  "bundler": "@parcel/bundler-default",
+  "transformers": {
+    "*.{js,ts}": [
+      "@parcel/transformer-babel",
+      "@parcel/transformer-js",
+    ],
+    "*.jade": ["@parcel/transformer-pug"],
+    "*.css": ["@parcel/transformer-postcss"],
+    "*.html": ["@parcel/transformer-posthtml"]
+  },
+  "runtimes": {
+    "browser": ["@parcel/runtime-js", "@parcel/runtime-browser-hmr"],
+    "node": ["@parcel/runtime-js"]
+  },
+  "optimizers": {
+    "*.js": ["@parcel/optimizer-terser"]
+  },
+  "validators": {
+    "*.ts": ["@parcel/validator-typescript"]
+  },
+  "packagers": {
+    "*.html": "@parcel/packager-html",
+    "*": "@parcel/packager-raw"
+  },
+  "resolvers": ["@parcel/resolver-default"],
+  "reporters": ["@parcel/reporter-cli"]
+}

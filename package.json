@@ -1,8 +1,13 @@
 {
   "name": "scraper",
   "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.jade",
   "description": "",
   "dependencies": {
+    "@parcel/resolver-default": "^2.0.0-beta.2",
+    "@parcel/transformer-babel": "^2.0.0-beta.2",
+    "@parcel/transformer-pug": "^2.0.0-alpha.3",
     "@popperjs/core": "^2.9.2",
     "bootstrap": "^5.0.1",
     "cheerio": "^1.0.0-rc.5",
@@ -11,7 +16,8 @@
     "express": "^4.17.1",
     "jade": "^1.11.0",
     "mongodb": "3.6.3",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "parcel": "^2.0.0-beta.2"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.0.15",
@@ -23,7 +29,6 @@
     "@types/node": "^14.14.34",
     "@types/node-fetch": "^2.5.8",
     "nodemon": "^2.0.7",
-    "parcel-bundler": "^1.12.5",
     "pug": "^3.0.2",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
@@ -32,12 +37,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:server": "node dist/api/index.js",
     "dev:server": "nodemon src/api/index.ts",
-    "fetch:server": "nodemon src/api/mongoDB.ts",
     "build:ts": "tsc -p .",
+    "fetch:server": "node dist/api/mongoDB.js",
     "dev:parcel": "parcel src/public/views/index.jade --no-cache",
-    "build:bundle": "parcel build src/public/views/index.jade"
+    "build:bundle": "parcel build src/public/views/index.jade --no-cache"
   },
-  "author": "",
+  "author": "AP Multimediadesigner, Lasse Aakjær",
   "sass": "node_modules/bootstrap/scss/bootstrap.scss",
   "style": "node_modules/bootstrap/dist/css/bootstrap.css",
   "license": "ISC"
